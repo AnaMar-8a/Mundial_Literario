@@ -1,0 +1,1402 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mundial Literario — 2026</title>
+  <style>
+    :root{
+      --bg:#0b0c10;
+      --panel:#0f1117;
+      --panel2:#121523;
+      --ink:#e8e8ea;
+      --muted:#a6a6b0;
+      --line:#2a2f45;
+      --accent:#ffffff;
+      --good:#d8ffd8;
+      --warn:#ffe7b3;
+      --bad:#ffd0d0;
+      --chip:#161a2b;
+      --shadow: 0 18px 40px rgba(0,0,0,.45);
+      --radius: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient(1200px 800px at 15% 10%, rgba(255,255,255,.06), transparent 60%),
+                  radial-gradient(900px 700px at 80% 20%, rgba(255,255,255,.05), transparent 55%),
+                  linear-gradient(180deg, #07080c, var(--bg));
+      color:var(--ink);
+    }
+    a{color:inherit}
+    .wrap{max-width:1200px;margin:0 auto;padding:22px}
+    header{
+      display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;
+      padding:18px 18px 10px;border:1px solid var(--line);border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+    }
+    .title h1{margin:0;font-size:22px;letter-spacing:.2px}
+    .title p{margin:6px 0 0;color:var(--muted);max-width:820px;line-height:1.35}
+    .top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    .chip{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:9px 12px;border-radius:999px;border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--muted);font-size:12px;
+    }
+    .chip code{font-family:var(--mono);color:var(--ink);font-size:12px}
+    .btn{
+      cursor:pointer;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--ink);
+      padding:10px 12px;border-radius:12px;
+      font-size:13px;letter-spacing:.2px;
+      transition: transform .05s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
+    }
+    .btn:hover{background: rgba(255,255,255,.06);border-color:#3a415f}
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{background: rgba(255,255,255,.12)}
+    .btn.danger{background: rgba(255,90,90,.12);border-color:rgba(255,90,90,.35)}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .tabs{
+      display:flex;gap:8px;flex-wrap:wrap;
+      margin:14px 0 12px;
+    }
+    .tab{
+      padding:10px 12px;border-radius:999px;border:1px solid var(--line);
+      background: rgba(255,255,255,.02);
+      color:var(--muted);font-size:13px;cursor:pointer;
+    }
+    .tab.active{color:var(--ink);background: rgba(255,255,255,.08)}
+    .grid{
+      display:grid;gap:12px;
+      grid-template-columns: 1fr;
+    }
+    @media(min-width: 980px){
+      .grid{grid-template-columns: 1.25fr .75fr}
+    }
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 16px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .card .hd .kicker{
+      font-family:var(--mono);
+      color:var(--muted);
+      font-size:12px;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+    }
+    .card .hd h2{margin:0;font-size:15px}
+    .card .bd{padding:14px 16px}
+    .muted{color:var(--muted)}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .spacer{height:10px}
+    .select, .input{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--ink);
+      padding:10px 10px;
+      border-radius:12px;
+      font-size:13px;
+      outline:none;
+      width:100%;
+    }
+    .select{cursor:pointer}
+    .input.sm, .select.sm{padding:8px 10px;border-radius:10px;font-size:13px}
+    .input.xs{padding:7px 8px;border-radius:10px;font-size:12px}
+    .input:focus, .select:focus{border-color:#4b567f}
+    .two{display:grid;grid-template-columns: 1fr 1fr;gap:10px}
+    .three{display:grid;grid-template-columns: 1fr 1fr 1fr;gap:10px}
+    @media(max-width: 640px){
+      .two,.three{grid-template-columns:1fr}
+    }
+
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th, td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top}
+    th{color:var(--muted);font-weight:600;text-align:left;font-size:12px;letter-spacing:.2px}
+    td.num, th.num{text-align:right;font-family:var(--mono)}
+    .teamcell{min-width:180px}
+    .teamname{font-weight:650}
+    .meta{color:var(--muted);font-size:12px;margin-top:3px;line-height:1.25}
+    .tiny{font-size:12px;color:var(--muted)}
+    .pill{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:6px 8px;border-radius:999px;background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      font-size:12px;color:var(--muted)
+    }
+    .match{
+      display:grid;grid-template-columns: 1fr auto 1fr;gap:10px;
+      align-items:center;
+      padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:16px;
+      background: rgba(0,0,0,.18);
+      margin-bottom:10px;
+    }
+    .match .side{display:flex;gap:10px;align-items:center;justify-content:space-between}
+    .match .side .who{display:flex;flex-direction:column;gap:2px;min-width:0}
+    .match .side .who .n{font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .match .side .who .b{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .score{
+      display:flex;gap:8px;align-items:center;justify-content:center;
+      font-family:var(--mono);
+    }
+    .score input{
+      width:52px;text-align:center;
+    }
+    .vs{
+      color:var(--muted);font-family:var(--mono);
+      font-size:12px;letter-spacing:.5px;
+      text-transform:uppercase;
+      display:flex;flex-direction:column;align-items:center;gap:6px;
+    }
+    .badge{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-width:28px;height:24px;padding:0 8px;border-radius:10px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color:var(--muted);font-family:var(--mono);font-size:12px
+    }
+
+    .bracket{
+      display:grid;
+      grid-template-columns: repeat(5, minmax(260px, 1fr));
+      gap:12px;
+      overflow:auto;
+      padding-bottom:6px;
+    }
+    .round{
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.02);
+      border-radius:18px;
+      padding:10px;
+      min-height:200px;
+    }
+    .round h3{
+      margin:2px 2px 10px;
+      font-size:13px;
+      color:var(--muted);
+      font-family:var(--mono);
+      letter-spacing:.7px;
+      text-transform:uppercase;
+    }
+    .bmatch{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      background: rgba(0,0,0,.18);
+      padding:10px;
+      margin-bottom:10px;
+    }
+    .brow{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .bteam{
+      min-width:0;
+      display:flex;flex-direction:column;gap:2px;
+    }
+    .bteam .n{font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .bteam .s{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .btools{display:flex;gap:8px;align-items:center}
+    .miniBtn{
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color:var(--ink);
+      padding:8px 10px;border-radius:12px;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .miniBtn:hover{background: rgba(255,255,255,.07)}
+    .miniBtn.primary{background: rgba(255,255,255,.12)}
+    .note{
+      padding:10px 12px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color:var(--muted);
+      line-height:1.35;
+      font-size:13px;
+    }
+
+    /* Modal */
+    .modal-backdrop{
+      position:fixed;inset:0;background: rgba(0,0,0,.6);
+      display:none;align-items:center;justify-content:center;
+      padding:18px;
+    }
+    .modal{
+      width:min(820px, 100%);
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .modal .mh{
+      padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
+    .modal .mh h3{margin:0;font-size:14px}
+    .modal .mb{padding:14px 16px}
+    .modal .mf{
+      padding:14px 16px;border-top:1px solid rgba(255,255,255,.08);
+      display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;
+    }
+    .kbd{
+      font-family:var(--mono);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      border-bottom-color: rgba(255,255,255,.22);
+      padding:2px 6px;border-radius:8px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .footer-hint{
+      margin-top:12px;color:var(--muted);font-size:12px;line-height:1.35
+    }
+    .rightcol .card{position:sticky;top:14px}
+    @media(max-width: 980px){
+      .rightcol .card{position:static}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>Mundial Literario — 2026</h1>
+        <p>
+          Asigna <b>Libro + Autor</b> a cada país, juega los partidos con marcador y deja que la tabla haga su magia.
+          Luego genera eliminatorias (pasan 1°, 2° y los 8 mejores terceros) y elige ganadores hasta la final.
+        </p>
+      </div>
+      <div class="top-actions">
+        <span class="chip">Auto-guardado: <code>localStorage</code></span>
+        <button class="btn" id="btnExport">Exportar</button>
+        <button class="btn" id="btnImport">Importar</button>
+        <button class="btn danger" id="btnReset">Reset</button>
+      </div>
+    </header>
+
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-tab="grupos">Grupos</div>
+      <div class="tab" data-tab="partidos">Partidos</div>
+      <div class="tab" data-tab="eliminatorias">Eliminatorias</div>
+      <div class="tab" data-tab="reglas">Reglas</div>
+    </div>
+
+    <div id="view-grupos" class="view">
+      <div class="grid">
+        <div class="leftcol">
+          <div class="card">
+            <div class="hd">
+              <div>
+                <div class="kicker">FASE DE GRUPOS</div>
+                <h2>Tablas por grupo</h2>
+              </div>
+              <div class="row">
+                <select class="select sm" id="groupPicker"></select>
+                <button class="btn" id="btnEditGroupTeams">Editar equipos</button>
+              </div>
+            </div>
+            <div class="bd" id="groupTableWrap"></div>
+          </div>
+
+          <div class="spacer"></div>
+
+          <div class="card">
+            <div class="hd">
+              <div>
+                <div class="kicker">RANKING</div>
+                <h2>Mejores terceros (top 8)</h2>
+              </div>
+              <span class="pill">Se actualiza con resultados</span>
+            </div>
+            <div class="bd" id="bestThirdsWrap"></div>
+          </div>
+        </div>
+
+        <div class="rightcol">
+          <div class="card">
+            <div class="hd">
+              <div>
+                <div class="kicker">ATajos</div>
+                <h2>Jugar más rápido</h2>
+              </div>
+            </div>
+            <div class="bd">
+              <div class="note">
+                <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+                  <div>
+                    <div style="color:var(--ink);font-weight:650;margin-bottom:4px;">Consejo</div>
+                    <div>Puedes editar libro/autor desde <b>Editar equipos</b>. Los partidos se juegan en la pestaña <b>Partidos</b>.</div>
+                  </div>
+                  <div class="kbd">Ctrl</div><div class="kbd">F</div>
+                </div>
+              </div>
+              <div class="spacer"></div>
+              <div class="two">
+                <button class="btn primary" id="goPartidos">Ir a Partidos</button>
+                <button class="btn" id="goElims">Ir a Eliminatorias</button>
+              </div>
+              <div class="spacer"></div>
+              <div class="note">
+                <b>¿Cómo “jugar” literariamente?</b><br/>
+                Usa el marcador como “puntos de lectura”: por ejemplo, <i>2–1</i> puede significar “más consenso/impacto” del libro A
+                en tu mesa de lectura. O si prefieres: <i>rating</i> (0–5) adaptado a tu método.
+              </div>
+
+              <div class="footer-hint">
+                Tip: si vas a jugar con tu amiga, exporta el JSON y lo comparten por chat para seguir en el mismo estado.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-partidos" class="view" style="display:none;">
+      <div class="card">
+        <div class="hd">
+          <div>
+            <div class="kicker">PARTIDOS</div>
+            <h2>Calendario por grupo (todos contra todos)</h2>
+          </div>
+          <div class="row">
+            <select class="select sm" id="matchesGroupPicker"></select>
+            <button class="btn" id="btnClearGroupResults">Borrar resultados del grupo</button>
+          </div>
+        </div>
+        <div class="bd" id="matchesWrap"></div>
+      </div>
+    </div>
+
+    <div id="view-eliminatorias" class="view" style="display:none;">
+      <div class="card">
+        <div class="hd">
+          <div>
+            <div class="kicker">ELIMINATORIAS</div>
+            <h2>Round of 32 → Final</h2>
+          </div>
+          <div class="row">
+            <button class="btn primary" id="btnGenerateBracket">Generar / Regenerar</button>
+            <button class="btn" id="btnClearBracket">Borrar eliminatorias</button>
+          </div>
+        </div>
+        <div class="bd">
+          <div class="note" id="bracketHint">
+            Genera la llave con base en las posiciones actuales:
+            pasan 1° y 2° de cada grupo + los 8 mejores terceros.
+            Puedes generar incluso si no has jugado todo, pero quedará “incompleto”.
+          </div>
+          <div class="spacer"></div>
+          <div id="bracketWrap"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-reglas" class="view" style="display:none;">
+      <div class="grid">
+        <div class="card">
+          <div class="hd">
+            <div>
+              <div class="kicker">REGLAS</div>
+              <h2>Cómo se calcula la tabla</h2>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="note">
+              <b>Puntuación:</b> Victoria = 3 pts, Empate = 1 pt, Derrota = 0 pts.<br/>
+              <b>Tiebreak:</b> Puntos → Diferencia (DG) → GF → nombre (A–Z).<br/>
+              <b>Partidos:</b> cada grupo (4 equipos) tiene 6 partidos (round-robin).<br/>
+              <b>Eliminatorias:</b> 32 clasificados: 24 (1° y 2° de cada grupo) + 8 mejores terceros.
+            </div>
+            <div class="spacer"></div>
+            <div class="note">
+              <b>Traducción literaria sugerida:</b><br/>
+              - “GF/GC” puede ser “votos a favor / votos en contra”, “puntos de lectura”, “impacto”, etc.<br/>
+              - Si no te gusta el lenguaje futbolero, úsalo como un sistema de <i>matchups</i> entre libros.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <div>
+              <div class="kicker">EXPORT / IMPORT</div>
+              <h2>Compartir estado</h2>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="note">
+              <b>Exportar</b> te copia el JSON del torneo (equipos + resultados + bracket).<br/>
+              <b>Importar</b> pega ese JSON y sigue donde quedaste.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Edit Team -->
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="mh">
+        <h3 id="modalTitle">Editar equipo</h3>
+        <button class="btn" id="btnCloseModal">Cerrar</button>
+      </div>
+      <div class="mb">
+        <div class="two">
+          <div>
+            <label class="tiny">Equipo / País</label>
+            <input class="input" id="m_teamName" placeholder="Ej: México" />
+          </div>
+          <div>
+            <label class="tiny">Grupo</label>
+            <input class="input" id="m_group" disabled />
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <div class="two">
+          <div>
+            <label class="tiny">Libro</label>
+            <input class="input" id="m_book" placeholder="Ej: Pedro Páramo" />
+          </div>
+          <div>
+            <label class="tiny">Autor/a</label>
+            <input class="input" id="m_author" placeholder="Ej: Juan Rulfo" />
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <div class="three">
+          <div>
+            <label class="tiny">Género</label>
+            <input class="input" id="m_genre" placeholder="Novela / Poesía / Ensayo..." />
+          </div>
+          <div>
+            <label class="tiny">Páginas</label>
+            <input class="input" id="m_pages" type="number" min="0" placeholder="0" />
+          </div>
+          <div>
+            <label class="tiny">Curaduría / “DT”</label>
+            <input class="input" id="m_curator" placeholder="Quien lo trae al mundial" />
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <div>
+          <label class="tiny">Notas (por qué compite)</label>
+          <input class="input" id="m_notes" placeholder="Ej: realismo mágico, icono nacional, revolución formal..." />
+        </div>
+      </div>
+      <div class="mf">
+        <button class="btn danger" id="btnClearTeamMeta">Limpiar meta</button>
+        <button class="btn primary" id="btnSaveTeam">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Export / Import -->
+  <div class="modal-backdrop" id="modalDataBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalDataTitle">
+      <div class="mh">
+        <h3 id="modalDataTitle">Exportar / Importar</h3>
+        <button class="btn" id="btnCloseDataModal">Cerrar</button>
+      </div>
+      <div class="mb">
+        <div class="note" style="margin-bottom:10px">
+          <b>Exportar:</b> copia el texto.<br/>
+          <b>Importar:</b> pega y presiona “Aplicar”.
+        </div>
+        <textarea id="dataText" class="input" style="min-height:220px;font-family:var(--mono);resize:vertical"
+          placeholder="Aquí aparecerá el JSON o puedes pegar uno..."></textarea>
+      </div>
+      <div class="mf">
+        <button class="btn" id="btnCopyData">Copiar</button>
+        <button class="btn primary" id="btnApplyImport">Aplicar</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* =========================
+   Mundial Literario — v1
+   ========================= */
+
+const STORAGE_KEY = "mundial_literario_v1";
+
+const initialGroups = [
+  { key:"A", teams:["México","Sudáfrica","República de Corea","DEN/MKD/CZE/IRL"] },
+  { key:"B", teams:["Canadá","ITA/NIR/WAL/BIH","Catar","Suiza"] },
+  { key:"C", teams:["Brasil","Marruecos","Haití","Escocia"] },
+  { key:"D", teams:["EE. UU.","Paraguay","Australia","TUR/RU/SVK/KOS"] },
+  { key:"E", teams:["Alemania","Curazao","Costa de Marfil","Ecuador"] },
+  { key:"F", teams:["Países Bajos","Japón","UKR/SWE/POL/ALB","Túnez"] },
+  { key:"G", teams:["Bélgica","Egipto","Irán","Nueva Zelanda"] },
+  { key:"H", teams:["España","Islas de Cabo Verde","Arabia Saudí","Uruguay"] },
+  { key:"I", teams:["Francia","Senegal","BOL/SUR/IRQ","Noruega"] },
+  { key:"J", teams:["Argentina","Argelia","Austria","Jordania"] },
+  { key:"K", teams:["Portugal","NCL/JAM/COD","Uzbekistán","Colombia"] },
+  { key:"L", teams:["Inglaterra","Croacia","Ghana","Panamá"] },
+];
+
+// Round-robin template: indices in a 4-team group
+const groupMatchPairs = [
+  [0,1],[2,3],
+  [0,2],[1,3],
+  [0,3],[1,2],
+];
+
+function uid(){
+  return Math.random().toString(16).slice(2) + Date.now().toString(16);
+}
+
+function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
+
+function defaultState(){
+  const state = {
+    version: 1,
+    updatedAt: new Date().toISOString(),
+    groups: {},        // {A: {teams:[{id,name,meta}], matches:[{id,aId,bId,a,b}]}}
+    bracket: null      // { rounds: [ [match], [match]... ] }
+  };
+
+  for(const g of initialGroups){
+    const teams = g.teams.map(name => ({
+      id: uid(),
+      name,
+      meta: { book:"", author:"", genre:"", pages:"", curator:"", notes:"" }
+    }));
+
+    const matches = groupMatchPairs.map((p, idx) => {
+      const a = teams[p[0]].id;
+      const b = teams[p[1]].id;
+      return { id: `${g.key}-${idx}-${uid()}`, aId:a, bId:b, aScore:"", bScore:"" };
+    });
+
+    state.groups[g.key] = { key:g.key, teams, matches };
+  }
+  return state;
+}
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultState();
+    const parsed = JSON.parse(raw);
+    // minimal migration guard
+    if(!parsed || !parsed.groups) return defaultState();
+    return parsed;
+  }catch(e){
+    return defaultState();
+  }
+}
+
+function saveState(){
+  state.updatedAt = new Date().toISOString();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  renderAll();
+}
+
+let state = loadState();
+
+/* =========================
+   Helpers: standings
+   ========================= */
+function parseScore(v){
+  if(v === "" || v === null || v === undefined) return null;
+  const n = Number(v);
+  return Number.isFinite(n) && n >= 0 ? n : null;
+}
+
+function computeStandings(groupKey){
+  const g = state.groups[groupKey];
+  const map = new Map();
+  for(const t of g.teams){
+    map.set(t.id, {
+      teamId: t.id,
+      name: t.name,
+      meta: t.meta,
+      PJ:0, PG:0, PE:0, PP:0, GF:0, GC:0, DG:0, Pts:0
+    });
+  }
+
+  for(const m of g.matches){
+    const a = parseScore(m.aScore);
+    const b = parseScore(m.bScore);
+    if(a === null || b === null) continue;
+
+    const A = map.get(m.aId);
+    const B = map.get(m.bId);
+    if(!A || !B) continue;
+
+    A.PJ++; B.PJ++;
+    A.GF += a; A.GC += b;
+    B.GF += b; B.GC += a;
+
+    if(a > b){ A.PG++; B.PP++; A.Pts += 3; }
+    else if(a < b){ B.PG++; A.PP++; B.Pts += 3; }
+    else { A.PE++; B.PE++; A.Pts += 1; B.Pts += 1; }
+  }
+
+  const rows = Array.from(map.values()).map(r => ({...r, DG: r.GF - r.GC}));
+  rows.sort((x,y) =>
+    (y.Pts - x.Pts) ||
+    (y.DG - x.DG) ||
+    (y.GF - x.GF) ||
+    x.name.localeCompare(y.name, "es")
+  );
+
+  // add rank
+  rows.forEach((r,i)=> r.rank = i+1);
+  return rows;
+}
+
+function allBestThirds(){
+  const thirds = [];
+  for(const k of Object.keys(state.groups)){
+    const s = computeStandings(k);
+    const third = s[2];
+    if(third){
+      thirds.push({ group:k, ...third });
+    }
+  }
+  thirds.sort((x,y) =>
+    (y.Pts - x.Pts) ||
+    (y.DG - x.DG) ||
+    (y.GF - x.GF) ||
+    x.name.localeCompare(y.name, "es")
+  );
+  return thirds;
+}
+
+/* =========================
+   Bracket generation
+   ========================= */
+function getQualifiers(){
+  const qualifiers = [];
+  const thirds = [];
+
+  for(const gKey of Object.keys(state.groups)){
+    const s = computeStandings(gKey);
+    if(s[0]) qualifiers.push({ seedType:"W", group:gKey, ...s[0] });
+    if(s[1]) qualifiers.push({ seedType:"R", group:gKey, ...s[1] });
+    if(s[2]) thirds.push({ seedType:"3", group:gKey, ...s[2] });
+  }
+
+  const bestThirds = thirds
+    .sort((x,y) => (y.Pts-x.Pts) || (y.DG-x.DG) || (y.GF-x.GF) || x.name.localeCompare(y.name,"es"))
+    .slice(0,8);
+
+  return { qualifiers: qualifiers.concat(bestThirds), bestThirds };
+}
+
+function teamLabel(team){
+  const book = team.meta?.book?.trim();
+  const author = team.meta?.author?.trim();
+  const line = (book || author) ? `${book || "—"} · ${author || "—"}` : "";
+  return { name: team.name, sub: line };
+}
+
+function getTeamById(teamId){
+  for(const g of Object.values(state.groups)){
+    const t = g.teams.find(x => x.id === teamId);
+    if(t) return { group:g.key, ...t };
+  }
+  return null;
+}
+
+function createBracketMatch(teamAId=null, teamBId=null){
+  return {
+    id: uid(),
+    aId: teamAId,
+    bId: teamBId,
+    aScore: "",
+    bScore: "",
+    winnerId: null
+  };
+}
+
+// simple “seeded” pairing: sort qualifiers by strength and pair top vs bottom
+function generateBracket(){
+  const { qualifiers } = getQualifiers();
+
+  // Need 32 to build full bracket
+  if(qualifiers.length < 32){
+    // fill with nulls
+    while(qualifiers.length < 32){
+      qualifiers.push({ teamId:null, name:"(Por definir)", group:"?", seedType:"?" , Pts:0, DG:0, GF:0 });
+    }
+  }
+
+  // Strength sort
+  qualifiers.sort((x,y) =>
+    (y.Pts - x.Pts) ||
+    (y.DG - x.DG) ||
+    (y.GF - x.GF) ||
+    x.name.localeCompare(y.name,"es")
+  );
+
+  // Split top 16 vs bottom 16
+  const top = qualifiers.slice(0,16);
+  const bot = qualifiers.slice(16,32).reverse();
+
+  // Pair with light constraint: avoid same-group matchups if possible by swapping
+  const pairs = [];
+  for(let i=0;i<16;i++){
+    let A = top[i];
+    let B = bot[i];
+
+    if(A.group === B.group){
+      // try swap with next
+      for(let j=i+1;j<16;j++){
+        if(bot[j].group !== A.group){
+          const tmp = bot[j];
+          bot[j] = B;
+          B = tmp;
+          break;
+        }
+      }
+    }
+    pairs.push([A, B]);
+  }
+
+  // R32
+  const r32 = pairs.map(([A,B]) => createBracketMatch(A.teamId || A.teamId === null ? A.teamId : A.teamId, B.teamId || B.teamId === null ? B.teamId : B.teamId));
+  // Next rounds placeholders
+  const r16 = Array.from({length:8}, ()=> createBracketMatch());
+  const qf  = Array.from({length:4}, ()=> createBracketMatch());
+  const sf  = Array.from({length:2}, ()=> createBracketMatch());
+  const fin = Array.from({length:1}, ()=> createBracketMatch());
+
+  state.bracket = { rounds: [r32, r16, qf, sf, fin] };
+  saveState();
+}
+
+function clearBracket(){
+  state.bracket = null;
+  saveState();
+}
+
+function setBracketWinner(roundIdx, matchIdx, winnerSide){
+  const br = state.bracket;
+  if(!br) return;
+  const match = br.rounds[roundIdx][matchIdx];
+  const a = parseScore(match.aScore);
+  const b = parseScore(match.bScore);
+
+  const winnerId = winnerSide === "A" ? match.aId : match.bId;
+  if(!winnerId) return;
+
+  match.winnerId = winnerId;
+
+  // advance to next round
+  if(roundIdx < br.rounds.length - 1){
+    const nextRound = br.rounds[roundIdx+1];
+    const nextMatchIdx = Math.floor(matchIdx / 2);
+    const slot = (matchIdx % 2 === 0) ? "aId" : "bId";
+    nextRound[nextMatchIdx][slot] = winnerId;
+
+    // reset winner/score in next match if changed
+    nextRound[nextMatchIdx].winnerId = null;
+    nextRound[nextMatchIdx].aScore = nextRound[nextMatchIdx].aScore || "";
+    nextRound[nextMatchIdx].bScore = nextRound[nextMatchIdx].bScore || "";
+
+    // also clear downstream if this change could ripple
+    for(let r=roundIdx+2;r<br.rounds.length;r++){
+      // brute: recompute forward from scratch based on winners
+      // easiest: clear all later rounds and re-advance
+      for(const m of br.rounds[r]){
+        m.aId = null; m.bId = null; m.winnerId = null; m.aScore=""; m.bScore="";
+      }
+      break;
+    }
+
+    // re-advance systematically
+    for(let r=0;r<br.rounds.length-1;r++){
+      const cur = br.rounds[r];
+      const nxt = br.rounds[r+1];
+      for(let mi=0; mi<cur.length; mi++){
+        const m = cur[mi];
+        if(!m.winnerId) continue;
+        const nmi = Math.floor(mi/2);
+        const s = (mi%2===0) ? "aId" : "bId";
+        nxt[nmi][s] = m.winnerId;
+      }
+    }
+  }
+
+  saveState();
+}
+
+/* =========================
+   UI + rendering
+   ========================= */
+const tabsEl = document.getElementById("tabs");
+const views = {
+  grupos: document.getElementById("view-grupos"),
+  partidos: document.getElementById("view-partidos"),
+  eliminatorias: document.getElementById("view-eliminatorias"),
+  reglas: document.getElementById("view-reglas"),
+};
+
+function setTab(name){
+  for(const t of tabsEl.querySelectorAll(".tab")){
+    t.classList.toggle("active", t.dataset.tab === name);
+  }
+  for(const k of Object.keys(views)){
+    views[k].style.display = (k === name) ? "" : "none";
+  }
+  // small conveniences
+  if(name === "partidos") renderMatches();
+  if(name === "eliminatorias") renderBracket();
+}
+tabsEl.addEventListener("click", (e)=>{
+  const tab = e.target.closest(".tab");
+  if(!tab) return;
+  setTab(tab.dataset.tab);
+});
+
+document.getElementById("goPartidos").onclick = ()=> setTab("partidos");
+document.getElementById("goElims").onclick = ()=> setTab("eliminatorias");
+
+const groupPicker = document.getElementById("groupPicker");
+const matchesGroupPicker = document.getElementById("matchesGroupPicker");
+
+function fillGroupPickers(){
+  const keys = Object.keys(state.groups).sort();
+  const opts = keys.map(k => `<option value="${k}">Grupo ${k}</option>`).join("");
+  groupPicker.innerHTML = opts;
+  matchesGroupPicker.innerHTML = opts;
+  const remembered = state.ui?.selectedGroup;
+  const selected = (remembered && state.groups[remembered]) ? remembered : keys[0];
+  groupPicker.value = selected;
+  matchesGroupPicker.value = selected;
+}
+function rememberSelectedGroup(k){
+  state.ui = state.ui || {};
+  state.ui.selectedGroup = k;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+groupPicker.addEventListener("change", ()=>{
+  rememberSelectedGroup(groupPicker.value);
+  renderGroupTable();
+});
+matchesGroupPicker.addEventListener("change", ()=>{
+  rememberSelectedGroup(matchesGroupPicker.value);
+  renderMatches();
+});
+
+const groupTableWrap = document.getElementById("groupTableWrap");
+const bestThirdsWrap = document.getElementById("bestThirdsWrap");
+const matchesWrap = document.getElementById("matchesWrap");
+const bracketWrap = document.getElementById("bracketWrap");
+
+function renderGroupTable(){
+  const k = groupPicker.value;
+  const g = state.groups[k];
+  const standings = computeStandings(k);
+
+  const rowsHtml = standings.map(r=>{
+    const team = getTeamById(r.teamId);
+    const book = team?.meta?.book?.trim() || "";
+    const author = team?.meta?.author?.trim() || "";
+    const metaLine = (book || author) ? `${book || "—"} · ${author || "—"}` : "Sin libro/autor aún";
+    return `
+      <tr>
+        <td class="num">${r.rank}</td>
+        <td class="teamcell">
+          <div class="teamname">${escapeHtml(r.name)}</div>
+          <div class="meta">${escapeHtml(metaLine)}</div>
+        </td>
+        <td class="num">${r.PJ}</td>
+        <td class="num">${r.PG}</td>
+        <td class="num">${r.PE}</td>
+        <td class="num">${r.PP}</td>
+        <td class="num">${r.GF}</td>
+        <td class="num">${r.GC}</td>
+        <td class="num">${r.DG}</td>
+        <td class="num">${r.Pts}</td>
+        <td class="num"><button class="miniBtn" data-edit="${r.teamId}">Editar</button></td>
+      </tr>
+    `;
+  }).join("");
+
+  groupTableWrap.innerHTML = `
+    <div class="note" style="margin-bottom:10px">
+      <b>Grupo ${k}</b> — orden: Pts → DG → GF. Haz clic en <b>Editar</b> para asignar libro/autor.
+    </div>
+    <div style="overflow:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th class="num">#</th>
+            <th>Equipo (País) + Libro</th>
+            <th class="num">PJ</th>
+            <th class="num">PG</th>
+            <th class="num">PE</th>
+            <th class="num">PP</th>
+            <th class="num">GF</th>
+            <th class="num">GC</th>
+            <th class="num">DG</th>
+            <th class="num">Pts</th>
+            <th class="num">✎</th>
+          </tr>
+        </thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+    </div>
+  `;
+
+  groupTableWrap.querySelectorAll("[data-edit]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      openEditTeamModal(k, btn.dataset.edit);
+    });
+  });
+}
+
+function renderBestThirds(){
+  const thirds = allBestThirds();
+  const top8 = thirds.slice(0,8);
+
+  const list = top8.map((t,i)=>{
+    return `
+      <tr>
+        <td class="num">${i+1}</td>
+        <td>
+          <div class="teamname">${escapeHtml(t.name)}</div>
+          <div class="meta">Grupo ${t.group}</div>
+        </td>
+        <td class="num">${t.Pts}</td>
+        <td class="num">${t.DG}</td>
+        <td class="num">${t.GF}</td>
+      </tr>
+    `;
+  }).join("");
+
+  bestThirdsWrap.innerHTML = `
+    <div style="overflow:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th class="num">#</th>
+            <th>Equipo</th>
+            <th class="num">Pts</th>
+            <th class="num">DG</th>
+            <th class="num">GF</th>
+          </tr>
+        </thead>
+        <tbody>${list || `<tr><td colspan="5" class="muted">Aún no hay datos suficientes.</td></tr>`}</tbody>
+      </table>
+    </div>
+    <div class="footer-hint">Si hay empates, decide con tu mesa de lectura (o juega un “desempate” extra).</div>
+  `;
+}
+
+function renderMatches(){
+  const k = matchesGroupPicker.value;
+  const g = state.groups[k];
+  const tmap = new Map(g.teams.map(t => [t.id, t]));
+
+  const matchCards = g.matches.map((m, idx)=>{
+    const A = tmap.get(m.aId);
+    const B = tmap.get(m.bId);
+    const aLabel = A ? teamLabel(A) : {name:"(Por definir)", sub:""};
+    const bLabel = B ? teamLabel(B) : {name:"(Por definir)", sub:""};
+    const tag = `Partido ${idx+1}`;
+    return `
+      <div class="match" data-mid="${m.id}">
+        <div class="side">
+          <div class="who">
+            <div class="n">${escapeHtml(aLabel.name)}</div>
+            <div class="b">${escapeHtml(aLabel.sub || "Sin libro/autor")}</div>
+          </div>
+          <div class="badge">A</div>
+        </div>
+
+        <div class="vs">
+          <div>${escapeHtml(tag)}</div>
+          <div class="score">
+            <input class="input xs" inputmode="numeric" pattern="[0-9]*" data-score="a" value="${m.aScore ?? ""}" placeholder="0" />
+            <span class="muted">–</span>
+            <input class="input xs" inputmode="numeric" pattern="[0-9]*" data-score="b" value="${m.bScore ?? ""}" placeholder="0" />
+          </div>
+          <div class="tiny">Marcador = puntos/votos</div>
+        </div>
+
+        <div class="side">
+          <div class="badge">B</div>
+          <div class="who" style="text-align:right">
+            <div class="n">${escapeHtml(bLabel.name)}</div>
+            <div class="b">${escapeHtml(bLabel.sub || "Sin libro/autor")}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  matchesWrap.innerHTML = `
+    <div class="note" style="margin-bottom:10px">
+      <b>Grupo ${k}</b> — escribe marcadores (ej: 2–1). La tabla se recalcula en tiempo real.
+    </div>
+    ${matchCards}
+    <div class="note">
+      Tip: si quieres jugar “a ciegas”, primero asignen libro/autor. Luego votan y ponen el marcador final.
+    </div>
+  `;
+
+  matchesWrap.querySelectorAll(".match").forEach(card=>{
+    const mid = card.dataset.mid;
+    const match = g.matches.find(x => x.id === mid);
+    if(!match) return;
+
+    card.querySelectorAll("input[data-score]").forEach(inp=>{
+      inp.addEventListener("input", ()=>{
+        const which = inp.dataset.score;
+        const clean = inp.value.replace(/[^\d]/g,"");
+        inp.value = clean;
+        if(which === "a") match.aScore = clean;
+        else match.bScore = clean;
+        saveState();
+      });
+    });
+  });
+}
+
+function renderBracket(){
+  const br = state.bracket;
+  if(!br){
+    bracketWrap.innerHTML = `<div class="note">Aún no hay eliminatorias. Presiona <b>Generar / Regenerar</b>.</div>`;
+    return;
+  }
+
+  const roundNames = ["Round of 32","Round of 16","Cuartos","Semis","Final"];
+
+  const html = `
+    <div class="bracket">
+      ${br.rounds.map((round, rIdx)=>{
+        return `
+          <div class="round">
+            <h3>${roundNames[rIdx]}</h3>
+            ${round.map((m, mIdx)=> renderBracketMatch(m, rIdx, mIdx)).join("")}
+          </div>
+        `;
+      }).join("")}
+    </div>
+    <div class="footer-hint">
+      En eliminatorias, puedes poner marcador (opcional) y luego elegir ganador. Si cambias un ganador, se recalcula el avance.
+    </div>
+  `;
+
+  bracketWrap.innerHTML = html;
+
+  // Wire events
+  bracketWrap.querySelectorAll("[data-bmid]").forEach(node=>{
+    const r = Number(node.dataset.round);
+    const i = Number(node.dataset.match);
+    const match = state.bracket.rounds[r][i];
+
+    node.querySelectorAll("input[data-bscore]").forEach(inp=>{
+      inp.addEventListener("input", ()=>{
+        const which = inp.dataset.bscore;
+        const clean = inp.value.replace(/[^\d]/g,"");
+        inp.value = clean;
+        if(which === "a") match.aScore = clean;
+        else match.bScore = clean;
+        saveState();
+      });
+    });
+
+    const btnA = node.querySelector("[data-win='A']");
+    const btnB = node.querySelector("[data-win='B']");
+    btnA.addEventListener("click", ()=> setBracketWinner(r, i, "A"));
+    btnB.addEventListener("click", ()=> setBracketWinner(r, i, "B"));
+  });
+}
+
+function renderBracketMatch(m, rIdx, mIdx){
+  const A = m.aId ? getTeamById(m.aId) : null;
+  const B = m.bId ? getTeamById(m.bId) : null;
+
+  const aName = A?.name || "(Por definir)";
+  const bName = B?.name || "(Por definir)";
+  const aSub = A ? teamLabel(A).sub : "";
+  const bSub = B ? teamLabel(B).sub : "";
+
+  const winner = m.winnerId;
+  const winA = winner && A && winner === A.id;
+  const winB = winner && B && winner === B.id;
+
+  return `
+    <div class="bmatch" data-bmid="${m.id}" data-round="${rIdx}" data-match="${mIdx}">
+      <div class="brow">
+        <div class="bteam">
+          <div class="n">${escapeHtml(aName)} ${winA ? "🏆" : ""}</div>
+          <div class="s">${escapeHtml(aSub || "—")}</div>
+        </div>
+        <div class="btools">
+          <input class="input xs" data-bscore="a" value="${m.aScore ?? ""}" placeholder="0" />
+          <span class="muted">–</span>
+          <input class="input xs" data-bscore="b" value="${m.bScore ?? ""}" placeholder="0" />
+        </div>
+      </div>
+      <div class="spacer" style="height:8px"></div>
+      <div class="brow">
+        <div class="bteam">
+          <div class="n">${escapeHtml(bName)} ${winB ? "🏆" : ""}</div>
+          <div class="s">${escapeHtml(bSub || "—")}</div>
+        </div>
+        <div class="btools">
+          <button class="miniBtn ${winA ? "primary":""}" data-win="A" ${!m.aId ? "disabled":""}>Gana A</button>
+          <button class="miniBtn ${winB ? "primary":""}" data-win="B" ${!m.bId ? "disabled":""}>Gana B</button>
+        </div>
+      </div>
+      <div class="footer-hint" style="margin-top:8px">
+        ${A ? `Grupo ${A.group}` : ""} ${A && B ? "·" : ""} ${B ? `Grupo ${B.group}` : ""}
+      </div>
+    </div>
+  `;
+}
+
+/* =========================
+   Modals + editing
+   ========================= */
+const modalBackdrop = document.getElementById("modalBackdrop");
+const btnCloseModal = document.getElementById("btnCloseModal");
+const btnSaveTeam = document.getElementById("btnSaveTeam");
+const btnClearTeamMeta = document.getElementById("btnClearTeamMeta");
+
+let modalCtx = null;
+
+function openEditTeamModal(groupKey, teamId){
+  const g = state.groups[groupKey];
+  const t = g.teams.find(x => x.id === teamId);
+  if(!t) return;
+
+  modalCtx = { groupKey, teamId };
+
+  document.getElementById("m_teamName").value = t.name || "";
+  document.getElementById("m_group").value = `Grupo ${groupKey}`;
+  document.getElementById("m_book").value = t.meta.book || "";
+  document.getElementById("m_author").value = t.meta.author || "";
+  document.getElementById("m_genre").value = t.meta.genre || "";
+  document.getElementById("m_pages").value = t.meta.pages || "";
+  document.getElementById("m_curator").value = t.meta.curator || "";
+  document.getElementById("m_notes").value = t.meta.notes || "";
+
+  document.getElementById("modalTitle").textContent = `Editar equipo — ${t.name}`;
+  modalBackdrop.style.display = "flex";
+  modalBackdrop.setAttribute("aria-hidden","false");
+  document.getElementById("m_teamName").focus();
+}
+
+function closeEditModal(){
+  modalCtx = null;
+  modalBackdrop.style.display = "none";
+  modalBackdrop.setAttribute("aria-hidden","true");
+}
+
+btnCloseModal.onclick = closeEditModal;
+modalBackdrop.addEventListener("click", (e)=>{
+  if(e.target === modalBackdrop) closeEditModal();
+});
+document.addEventListener("keydown", (e)=>{
+  if(e.key === "Escape"){
+    if(modalBackdrop.style.display === "flex") closeEditModal();
+    if(modalDataBackdrop.style.display === "flex") closeDataModal();
+  }
+});
+
+btnSaveTeam.onclick = ()=>{
+  if(!modalCtx) return;
+  const g = state.groups[modalCtx.groupKey];
+  const t = g.teams.find(x => x.id === modalCtx.teamId);
+  if(!t) return;
+
+  t.name = document.getElementById("m_teamName").value.trim() || t.name;
+  t.meta.book = document.getElementById("m_book").value.trim();
+  t.meta.author = document.getElementById("m_author").value.trim();
+  t.meta.genre = document.getElementById("m_genre").value.trim();
+  t.meta.pages = document.getElementById("m_pages").value.trim();
+  t.meta.curator = document.getElementById("m_curator").value.trim();
+  t.meta.notes = document.getElementById("m_notes").value.trim();
+
+  closeEditModal();
+  saveState();
+};
+
+btnClearTeamMeta.onclick = ()=>{
+  document.getElementById("m_book").value = "";
+  document.getElementById("m_author").value = "";
+  document.getElementById("m_genre").value = "";
+  document.getElementById("m_pages").value = "";
+  document.getElementById("m_curator").value = "";
+  document.getElementById("m_notes").value = "";
+};
+
+/* =========================
+   Bulk edit via "Editar equipos"
+   ========================= */
+document.getElementById("btnEditGroupTeams").onclick = ()=>{
+  const k = groupPicker.value;
+  const g = state.groups[k];
+  // quick modal: reuse data modal for a mini editor
+  const lines = g.teams.map(t => t.name).join("\n");
+  openDataModal(
+    `Editar nombres — Grupo ${k}`,
+    `Pega una lista (4 líneas) con los nombres.\n\nActual:\n${lines}`,
+    lines,
+    (txt)=>{
+      const arr = txt.split("\n").map(s=>s.trim()).filter(Boolean);
+      if(arr.length >= 4){
+        for(let i=0;i<4;i++){
+          g.teams[i].name = arr[i];
+        }
+        saveState();
+      }else{
+        alert("Necesito al menos 4 líneas (un nombre por línea).");
+      }
+    }
+  );
+};
+
+/* =========================
+   Clear group results
+   ========================= */
+document.getElementById("btnClearGroupResults").onclick = ()=>{
+  const k = matchesGroupPicker.value;
+  const g = state.groups[k];
+  for(const m of g.matches){
+    m.aScore = "";
+    m.bScore = "";
+  }
+  saveState();
+};
+
+/* =========================
+   Export / Import / Reset
+   ========================= */
+const modalDataBackdrop = document.getElementById("modalDataBackdrop");
+const btnCloseDataModal = document.getElementById("btnCloseDataModal");
+const dataText = document.getElementById("dataText");
+const btnCopyData = document.getElementById("btnCopyData");
+const btnApplyImport = document.getElementById("btnApplyImport");
+
+let dataModalApply = null;
+
+function openDataModal(title, hint, content, applyFn){
+  document.getElementById("modalDataTitle").textContent = title;
+  dataText.value = content || "";
+  dataModalApply = applyFn || null;
+  modalDataBackdrop.style.display = "flex";
+  modalDataBackdrop.setAttribute("aria-hidden","false");
+  dataText.focus();
+  if(hint && hint !== ""){
+    // append hint in placeholder-like manner? keep it minimal:
+    // (No UI clutter; hint already used in note above.)
+  }
+}
+
+function closeDataModal(){
+  dataModalApply = null;
+  modalDataBackdrop.style.display = "none";
+  modalDataBackdrop.setAttribute("aria-hidden","true");
+}
+
+btnCloseDataModal.onclick = closeDataModal;
+modalDataBackdrop.addEventListener("click", (e)=>{
+  if(e.target === modalDataBackdrop) closeDataModal();
+});
+
+btnCopyData.onclick = async ()=>{
+  try{
+    await navigator.clipboard.writeText(dataText.value);
+    btnCopyData.textContent = "Copiado ✓";
+    setTimeout(()=> btnCopyData.textContent = "Copiar", 900);
+  }catch(e){
+    alert("No pude copiar. Selecciona el texto y copia manualmente.");
+  }
+};
+
+btnApplyImport.onclick = ()=>{
+  if(!dataModalApply){
+    // default import
+    try{
+      const parsed = JSON.parse(dataText.value);
+      if(!parsed || !parsed.groups) throw new Error("Estructura inválida");
+      state = parsed;
+      saveState();
+      closeDataModal();
+    }catch(e){
+      alert("JSON inválido o incompleto. Revisa y vuelve a intentar.");
+    }
+  }else{
+    dataModalApply(dataText.value);
+    closeDataModal();
+  }
+};
+
+document.getElementById("btnExport").onclick = ()=>{
+  openDataModal("Exportar torneo", "", JSON.stringify(state, null, 2), null);
+};
+
+document.getElementById("btnImport").onclick = ()=>{
+  openDataModal("Importar torneo", "", "", null);
+};
+
+document.getElementById("btnReset").onclick = ()=>{
+  const ok = confirm("¿Seguro? Esto borra el estado guardado (resultados, libros, eliminatorias).");
+  if(!ok) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = defaultState();
+  saveState();
+};
+
+/* =========================
+   Bracket controls
+   ========================= */
+document.getElementById("btnGenerateBracket").onclick = ()=>{
+  generateBracket();
+};
+document.getElementById("btnClearBracket").onclick = ()=>{
+  clearBracket();
+};
+
+/* =========================
+   Rendering orchestration
+   ========================= */
+function renderAll(){
+  fillGroupPickers();
+  renderGroupTable();
+  renderBestThirds();
+  // only render these when visible, but safe:
+  if(views.partidos.style.display !== "none") renderMatches();
+  if(views.eliminatorias.style.display !== "none") renderBracket();
+}
+
+function escapeHtml(str){
+  return (str ?? "").toString()
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+// init
+renderAll();
+</script>
+</body>
+</html>
